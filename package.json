@@ -1,16 +1,29 @@
 {
   "name": "registersim",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "Register machine simulator",
+  "private": true,
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-peg": "npx pegjs -o src/parser/parser.js --format es src/parser/grammar.peg"
+    "build-peg": "npx pegjs -o src/parser/parser.js --format es src/parser/grammar.peg",
+    "build": "webpack"
   },
   "author": "Fabian Zaremba",
   "license": "MIT",
-  "dependencies": {
-    "pegjs": "^0.11.0-master.b7b87ea"
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/eslint-parser": "^7.12.1",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-env": "^7.12.11",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^7.16.0",
+    "pegjs": "^0.11.0-master.b7b87ea",
+    "terser-webpack-plugin": "^5.0.3",
+    "webpack": "^5.11.0",
+    "webpack-cli": "^4.3.0"
   }
 }

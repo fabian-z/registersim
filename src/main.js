@@ -11,13 +11,20 @@ class RegisterMachine {
         return this.registers.get(reg);
     }
     set(reg, val) {
+        if ( val < 0) {
+          throw new Error(`register ${reg} negative`);
+        }
         this.registers.set(reg, val);
     }
     increment(reg) {
         this.registers.set(reg, this.get(reg) + 1);
     }
     decrement(reg) {
-        this.registers.set(reg, this.get(reg) - 1);
+        let res = this.get(reg) - 1;
+        if (res < 0) {
+          throw new Error(`register ${reg} negative`);
+        }
+        this.registers.set(reg, res);
     }
     length() {
         return this.registers.size();

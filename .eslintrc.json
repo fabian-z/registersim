@@ -1,0 +1,26 @@
+{
+    "env": {
+        "es2021": true,
+        "browser": true
+    },
+    "extends": "eslint:recommended",
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "rules": {
+        "eqeqeq": "error",
+        "semi": "error",
+        "curly": "error",
+        "no-alert": "error",
+        "no-implicit-coercion": "error",
+        "no-invalid-this": "error",
+        "no-return-assign": "error",
+        "no-unused-expressions": "error",
+        "brace-style": "warn",
+        "comma-dangle": ["warn", "always-multiline"],
+        "dot-notation": "warn",
+        "yoda": "warn"
+    }
+}
