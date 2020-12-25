@@ -1,0 +1,16 @@
+{
+  "name": "registersim",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-peg": "npx pegjs -o parser/parser.js --format es parser/grammar.peg"
+  },
+  "author": "Fabian Zaremba",
+  "license": "MIT",
+  "dependencies": {
+    "pegjs": "^0.11.0-master.b7b87ea"
+  }
+}
