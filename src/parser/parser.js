@@ -152,8 +152,7 @@ function peg$parse(input, options) {
   var peg$f1 = function(commands, reg) { return {action: "loopUntilZero", register: reg, commands: commands}; };
   var peg$f2 = function(reg) { return {action: "increment", register: reg }};
   var peg$f3 = function(reg) { return {action: "decrement", register: reg }};
-  var peg$f4 = function(digits) { return digits.join("") };
-  var peg$f5 = function() { return "ws" };
+  var peg$f4 = function(digits) { return parseInt(digits.join("")) };
 
   var peg$currPos = 0;
   var peg$savedPos = 0;
@@ -549,7 +548,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parse_() {
-    var s0, s1, s2;
+    var s0, s1;
 
     var rule$expects = function (expected) {
       if (peg$silentFails === 0) peg$expect(expected);
@@ -557,26 +556,22 @@ function peg$parse(input, options) {
 
     rule$expects(peg$e5);
     peg$silentFails++;
-    s0 = peg$currPos;
-    s1 = [];
+    s0 = [];
     if (peg$r3.test(input.charAt(peg$currPos))) {
-      s2 = input.charAt(peg$currPos);
+      s1 = input.charAt(peg$currPos);
       peg$currPos++;
     } else {
-      s2 = peg$FAILED;
+      s1 = peg$FAILED;
     }
-    while (s2 !== peg$FAILED) {
-      s1.push(s2);
+    while (s1 !== peg$FAILED) {
+      s0.push(s1);
       if (peg$r3.test(input.charAt(peg$currPos))) {
-        s2 = input.charAt(peg$currPos);
+        s1 = input.charAt(peg$currPos);
         peg$currPos++;
       } else {
-        s2 = peg$FAILED;
+        s1 = peg$FAILED;
       }
     }
-    peg$savedPos = s0;
-    s1 = peg$f5();
-    s0 = s1;
     peg$silentFails--;
 
     return s0;

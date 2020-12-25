@@ -1,9 +1,65 @@
 import { parse, SyntaxError } from './parser/parser.js';
 
+class RegisterMachine {
+    registers = new Map();
+
+    get(reg) {
+        if (!this.registers.has(reg)) {
+            this.registers.set(reg, 0);
+            return 0;
+        }
+        return this.registers.get(reg);
+    }
+    set(reg, val) {
+        this.registers.set(reg, val);
+    }
+    increment(reg) {
+        this.registers.set(reg, this.get(reg) + 1);
+    }
+    decrement(reg) {
+        this.registers.set(reg, this.get(reg) - 1);
+    }
+    length() {
+        return this.registers.size();
+    }
+}
+
+
 let ast;
 try {
-ast = parse("a2 (s1 a3)1 a5");
+    ast = parse("(s0 a2 a3 )0 (s3 a0 )3 (s1 a2 a3 )1 (s3 a1 )3");
 } catch (e) {
-console.log(e.message);
+    console.log(e.message);
 }
-console.log(ast);
+
+let reg = new RegisterMachine();
+
+reg.set(0, 10);
+reg.set(1, 5);
+
+let processFunction = function(ast) {
+    for (let command of ast) {
+        console.log(command);
+        switch (command.action) {
+            case "increment": {
+                reg.increment(command.register);
+                break;
+            }
+            case "decrement": {
+                reg.decrement(command.register);
+                break;
+            }
+            case "loopUntilZero": {
+                while (reg.get(command.register) != 0) {
+                    processFunction(command.commands);
+                }
+                break;
+            }
+            default:
+                throw new Error("invalid command parsed");
+        }
+    }
+}
+processFunction(ast);
+
+console.log(reg.registers.entries());

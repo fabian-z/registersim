@@ -5,5 +5,5 @@ decrementLoop = "(" _ commands:commandSequence _ ")" reg:integer { return {actio
 incrementCommand = [aA] reg:integer { return {action: "increment", register: reg }}
 decrementCommand = [sS] reg:integer { return {action: "decrement", register: reg }}
 
-integer = digits:[0-9]+ { return digits.join("") }
+integer = digits:[0-9]+ { return parseInt(digits.join("")) }
 _ "whitespace" = [ \t\n\r]*
