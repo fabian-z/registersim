@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-peg": "npx pegjs -o parser/parser.js --format es parser/grammar.peg"
+    "build-peg": "npx pegjs -o src/parser/parser.js --format es src/parser/grammar.peg"
   },
   "author": "Fabian Zaremba",
   "license": "MIT",

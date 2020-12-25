@@ -1,7 +1,9 @@
 commandSequence = command+
-command = decrementLoop / incrementCommand / decrementCommand
+command = _ command:(decrementLoop / incrementCommand / decrementCommand) _ { return command; }
 
-decrementLoop = "(" commands:commandSequence ")" reg:integer { return {action: "loopUntilZero", register: reg, commands: commands}; }
+decrementLoop = "(" _ commands:commandSequence _ ")" reg:integer { return {action: "loopUntilZero", register: reg, commands: commands}; }
 incrementCommand = [aA] reg:integer { return {action: "increment", register: reg }}
 decrementCommand = [sS] reg:integer { return {action: "decrement", register: reg }}
+
 integer = digits:[0-9]+ { return digits.join("") }
+_ "whitespace" = [ \t\n\r]*

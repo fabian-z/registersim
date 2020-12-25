@@ -1,8 +1,9 @@
 import { parse, SyntaxError } from './parser/parser.js';
 
-let err;
+let ast;
 try {
-err = parse("a2 (s1)1");
+ast = parse("a2 (s1 a3)1 a5");
 } catch (e) {
 console.log(e.message);
 }
+console.log(ast);
