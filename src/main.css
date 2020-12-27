@@ -71,12 +71,16 @@ table td {
     height: 100%;
     width: 100%;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 0.5fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
     gap: 5px 5px;
     grid-template-areas:
-        "input-source input-source input-source input-source"
+        "input-source input-source execution-log execution-log"
         "input-state input-state output-state output-state"
         "input-state input-state output-state output-state";
+}
+
+.execution-log {
+    grid-area: execution-log;
 }
 
 .input-source {

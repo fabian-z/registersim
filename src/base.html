@@ -15,6 +15,7 @@
             <input id="source" name="source" type="text" placeholder="Enter your program">
             <input type="submit" value="Run">
         </div>
+        <div class="execution-log grid-element"></div>
         <div class="input-state grid-element">
             <div class="table-header">Input</div>
             <table id="input-table">
@@ -23,8 +24,8 @@
                     <th>Value</th>
                 </tr>
                 <tr>
-                    <td><input type="number" min="0" step="1" value="0"></td>
-                    <td><input type="number" min="0" step="1" value="0"></td>
+                    <td><input class="input-register" type="number" min="0" step="1" value="0"></td>
+                    <td><input class="input-value" type="number" min="0" step="1" value="0"></td>
                 </tr>
             </table>
             <button id="add-register">Add register</button>
