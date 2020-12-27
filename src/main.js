@@ -11,8 +11,8 @@ class RegisterMachine {
         return this.registers.get(reg);
     }
     set(reg, val) {
-        if ( val < 0) {
-          throw new Error(`register ${reg} negative`);
+        if (val < 0) {
+            throw new Error(`register ${reg} negative`);
         }
         this.registers.set(reg, val);
     }
@@ -22,7 +22,7 @@ class RegisterMachine {
     decrement(reg) {
         let res = this.get(reg) - 1;
         if (res < 0) {
-          throw new Error(`register ${reg} negative`);
+            throw new Error(`register ${reg} negative`);
         }
         this.registers.set(reg, res);
     }
@@ -31,12 +31,14 @@ class RegisterMachine {
     }
 }
 
-
+// addition of registers 0 & 1 -> register 2
+// (s0 a2 a3 )0 (s3 a0 )3 (s1 a2 a3 )1 (s3 a1 )3
 let ast;
 try {
     ast = parse("(s0 a2 a3 )0 (s3 a0 )3 (s1 a2 a3 )1 (s3 a1 )3");
 } catch (e) {
     console.log(e.message);
+    process.exit(1);
 }
 
 let reg = new RegisterMachine();
