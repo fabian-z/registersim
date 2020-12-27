@@ -51,6 +51,19 @@ td {
     padding: 20px;
 }
 
+/* custom table styling */
+
+
+table td {
+    border: 1px solid black;
+}
+
+.table-header {
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+}
+
 /* Grid area */
 
 .grid-container {
@@ -82,14 +95,5 @@ td {
 
 .grid-element {
     border: 1px solid black;
-}
-
-table td {
-    border: 1px solid black;
-}
-
-.table-header {
-    font-weight: bold;
-    text-align: center;
     padding: 20px;
 }
