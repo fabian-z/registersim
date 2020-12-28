@@ -8,15 +8,18 @@ export class RegisterMachine {
         }
         return this.registers.get(reg);
     }
+
     set(reg, val) {
         if (val < 0) {
             throw new Error(`register ${reg} negative`);
         }
         this.registers.set(reg, val);
     }
+
     increment(reg) {
         this.registers.set(reg, this.get(reg) + 1);
     }
+
     decrement(reg) {
         let res = this.get(reg) - 1;
         if (res < 0) {
@@ -24,7 +27,34 @@ export class RegisterMachine {
         }
         this.registers.set(reg, res);
     }
+
     length() {
         return this.registers.size();
+    }
+
+    processInstructions(ast, instructionCallback) {
+        for (let command of ast) {
+            if (instructionCallback) {
+                instructionCallback(command);
+            }
+            switch (command.action) {
+                case "increment": {
+                    this.increment(command.register);
+                    break;
+                }
+                case "decrement": {
+                    this.decrement(command.register);
+                    break;
+                }
+                case "loopUntilZero": {
+                    while (this.get(command.register) != 0) {
+                        this.processInstructions(command.commands, instructionCallback);
+                    }
+                    break;
+                }
+                default:
+                    throw new Error("invalid command parsed");
+            }
+        }
     }
 }
