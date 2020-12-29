@@ -7,7 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-peg": "npx pegjs -o src/parser/parser.js --format es src/parser/grammar.peg",
-    "build": "npx webpack && cp src/main.css dist/main.css"
+    "build": "npx webpack && cp src/main.css dist/main.css",
+    "push": "git subtree push --prefix dist origin gh-pages"
   },
   "author": "Fabian Zaremba",
   "license": "MIT",

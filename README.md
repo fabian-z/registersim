@@ -1,15 +1,3 @@
-# 🚀 Welcome to your new awesome project!
+# Register machine simulator
 
-This project has been created using **webpack scaffold**, you can now run
-
-```
-npm run build
-```
-
-or
-
-```
-yarn build
-```
-
-to bundle your application
+Based on syntax and specification from lecture theoretical computer science @ DHBW Lörrach
