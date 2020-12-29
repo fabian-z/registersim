@@ -1,5 +1,5 @@
 import { parse } from './parser/parser.js';
-import { RegisterMachine } from './register.js'
+import { RegisterMachine } from './register.js';
 
 let reg = new RegisterMachine();
 

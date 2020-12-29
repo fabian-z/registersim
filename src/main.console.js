@@ -1,5 +1,5 @@
-import { parse, SyntaxError } from './parser/parser.js';
-import { RegisterMachine } from './register.js'
+import { parse } from './parser/parser.js';
+import { RegisterMachine } from './register.js';
 
 // addition of registers 0 & 1 -> register 2
 // (s0 a2 a3 )0 (s3 a0 )3 (s1 a2 a3 )1 (s3 a1 )3

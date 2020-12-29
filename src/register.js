@@ -51,7 +51,7 @@ export class RegisterMachine {
                     break;
                 }
                 case "loopUntilZero": {
-                    while (this.get(command.register) != 0) {
+                    while (this.get(command.register) !== 0) {
                         this.processInstructions(command.commands, instructionCallback);
                     }
                     break;
