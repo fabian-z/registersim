@@ -73,6 +73,17 @@ table td {
 
 .input-source {
     grid-area: input-source;
+    text-align: center;
+}
+
+#source {
+    height: 80%;
+    width: 90%;
+    resize: none;
+    padding: 1%;
+    margin-bottom: 20px;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 .input-state {

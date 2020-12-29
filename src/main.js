@@ -1,4 +1,4 @@
-import { parse, SyntaxError } from './parser/parser.js';
+import { parse } from './parser/parser.js';
 import { RegisterMachine } from './register.js'
 
 let reg = new RegisterMachine();
@@ -30,7 +30,13 @@ document.addEventListener('DOMContentLoaded', function() {
             let ast = parse(source);
             reg.processInstructions(ast);
         } catch (e) {
-            document.getElementById("execution-log").innerText = "Error: " + e.message;
+            let errorMsg;
+            if (e.name === "SyntaxError") {
+                errorMsg = `Syntax error on line ${e.location.start.line}, column ${e.location.start.column}: ${e.message}`;
+            } else {
+                errorMsg = "Execution error: " + e.message;
+            }
+            document.getElementById("execution-log").innerText = errorMsg;
             console.log(e);
             return;
         }
