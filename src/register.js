@@ -11,9 +11,13 @@ export class RegisterMachine {
 
     set(reg, val) {
         if (val < 0) {
-            throw new Error(`register ${reg} negative`);
+            throw new Error(`invalid set - register ${reg} negative`);
         }
         this.registers.set(reg, val);
+    }
+
+    reset() {
+        this.registers.clear();
     }
 
     increment(reg) {
@@ -23,7 +27,7 @@ export class RegisterMachine {
     decrement(reg) {
         let res = this.get(reg) - 1;
         if (res < 0) {
-            throw new Error(`register ${reg} negative`);
+            throw new Error(`invalid decrement instruction - register ${reg} negative`);
         }
         this.registers.set(reg, res);
     }

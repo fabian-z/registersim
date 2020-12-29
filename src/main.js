@@ -1,20 +1,47 @@
 import { parse, SyntaxError } from './parser/parser.js';
 import { RegisterMachine } from './register.js'
 
-// addition of registers 0 & 1 -> register 2
-// (s0 a2 a3 )0 (s3 a0 )3 (s1 a2 a3 )1 (s3 a1 )3
-let ast;
-try {
-    ast = parse("(a1)0");
-} catch (e) {
-    console.log(e.message);
-    process.exit(1);
-}
-
 let reg = new RegisterMachine();
 
-reg.set(0, 10);
-reg.set(1, 5);
-reg.processInstructions(ast);
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById("execute").addEventListener("click", function() {
+        // execute source code
+        let source = document.getElementById("source").value;
+        // set register from input
+        reg.reset();
+        reg.set(0, 5);
+        reg.set(1, 10);
+        try {
+            let ast = parse(source);
+            reg.processInstructions(ast);
+        } catch (e) {
+            console.log(e);
+        }
 
-console.log(reg.registers.entries());
+        let outTable = document.getElementById("output-table");
+        let outRows = document.querySelectorAll(".output-row");
+        for (let row of outRows) {
+            row.remove();
+        }
+
+        for (let regVal of reg.registers) {
+            let register = regVal[0];
+            let value = regVal[1];
+
+            let outerRow = document.createElement("tr");
+            outerRow.className = "output-row";
+
+            let firstCol = document.createElement("td");
+            firstCol.innerText = register;
+
+            let secondCol = document.createElement("td");
+            secondCol.innerText = value;
+
+            outerRow.append(firstCol);
+            outerRow.append(secondCol);
+            outTable.append(outerRow);
+        }
+
+        console.log(reg.registers.entries());
+    });
+});

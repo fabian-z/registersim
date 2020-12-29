@@ -6,14 +6,14 @@
     <title>Register Machine Simulator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="main.css">
-    <script type="module" src="main.js"></script>
+    <script src="../dist/main.js"></script>
 </head>
 
 <body>
     <div class="grid-container">
         <div class="input-source grid-element">
             <input id="source" name="source" type="text" placeholder="Enter your program">
-            <input type="submit" value="Run">
+            <input id="execute" type="submit" value="Run">
         </div>
         <div class="execution-log grid-element"></div>
         <div class="input-state grid-element">
@@ -37,7 +37,7 @@
                     <th>Register</th>
                     <th>Value</th>
                 </tr>
-                <tr>
+                <tr class="output-row">
                     <td>0</td>
                     <td>1</td>
                 </tr>
