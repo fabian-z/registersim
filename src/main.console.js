@@ -4,12 +4,7 @@ import { RegisterMachine } from './register.js'
 // addition of registers 0 & 1 -> register 2
 // (s0 a2 a3 )0 (s3 a0 )3 (s1 a2 a3 )1 (s3 a1 )3
 let ast;
-try {
-    ast = parse("(s0 a2 a3 )0 (s3 a0 )3 (s1 a2 a3 )1 (s3 a1 )3");
-} catch (e) {
-    console.log(e.message);
-    process.exit(1);
-}
+ast = parse("(s0 a2 a3 )0 (s3 a0 )3 (s1 a2 a3 )1 (s3 a1 )3");
 
 let reg = new RegisterMachine();
 

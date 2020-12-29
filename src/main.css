@@ -30,29 +30,12 @@ table {
     border: 1px solid black;
 }
 
-thead th:nth-child(1) {
-    width: 30%;
-}
-
-thead th:nth-child(2) {
-    width: 20%;
-}
-
-thead th:nth-child(3) {
-    width: 15%;
-}
-
-thead th:nth-child(4) {
-    width: 35%;
-}
-
 th,
 td {
     padding: 20px;
 }
 
 /* custom table styling */
-
 
 table td {
     border: 1px solid black;
@@ -62,6 +45,10 @@ table td {
     font-weight: bold;
     text-align: center;
     padding: 20px;
+}
+
+#input-table {
+    margin-bottom: 20px;
 }
 
 /* Grid area */
@@ -79,8 +66,9 @@ table td {
         "input-state input-state output-state output-state";
 }
 
-.execution-log {
+#execution-log {
     grid-area: execution-log;
+    overflow-y: auto;
 }
 
 .input-source {
@@ -90,6 +78,12 @@ table td {
 .input-state {
     grid-area: input-state;
     overflow-y: auto;
+    text-align: center;
+}
+
+.input-register,
+.input-value {
+    width: 100%;
 }
 
 .output-state {

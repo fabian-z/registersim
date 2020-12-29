@@ -15,7 +15,7 @@
             <input id="source" name="source" type="text" placeholder="Enter your program">
             <input id="execute" type="submit" value="Run">
         </div>
-        <div class="execution-log grid-element"></div>
+        <div id="execution-log" class="grid-element"></div>
         <div class="input-state grid-element">
             <div class="table-header">Input</div>
             <table id="input-table">
@@ -23,12 +23,18 @@
                     <th>Register</th>
                     <th>Value</th>
                 </tr>
-                <tr>
+                <tr class="input-row">
+                    <td><input class="input-register" type="number" min="0" step="1" value="0"></td>
+                    <td><input class="input-value" type="number" min="0" step="1" value="0"></td>
+                </tr>
+                <tr class="input-row">
                     <td><input class="input-register" type="number" min="0" step="1" value="0"></td>
                     <td><input class="input-value" type="number" min="0" step="1" value="0"></td>
                 </tr>
             </table>
             <button id="add-register">Add register</button>
+            <button id="remove-register">Remove register</button>
+
         </div>
         <div class="output-state grid-element">
             <div class="table-header">Output</div>
@@ -36,10 +42,6 @@
                 <tr>
                     <th>Register</th>
                     <th>Value</th>
-                </tr>
-                <tr class="output-row">
-                    <td>0</td>
-                    <td>1</td>
                 </tr>
             </table>
         </div>
