@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Register Machine Simulator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <script src="main.js"></script>
+</head>
+
+<body>
+    <div class="grid-container">
+        <div class="input-source grid-element">
+            <textarea id="source" name="source" type="text" placeholder="Enter your program"></textarea>
+            <input id="execute" type="submit" value="Run">
+        </div>
+        <div id="execution-log" class="grid-element"></div>
+        <div class="input-state grid-element">
+            <div class="table-header">Input</div>
+            <table id="input-table">
+                <tr>
+                    <th>Register</th>
+                    <th>Value</th>
+                </tr>
+                <tr class="input-row">
+                    <td><input class="input-register" type="number" min="0" step="1" value="0"></td>
+                    <td><input class="input-value" type="number" min="0" step="1" value="0"></td>
+                </tr>
+                <tr class="input-row">
+                    <td><input class="input-register" type="number" min="0" step="1" value="0"></td>
+                    <td><input class="input-value" type="number" min="0" step="1" value="0"></td>
+                </tr>
+            </table>
+            <button id="add-register">Add register</button>
+            <button id="remove-register">Remove register</button>
+
+        </div>
+        <div class="output-state grid-element">
+            <div class="table-header">Output</div>
+            <table id="output-table">
+                <tr>
+                    <th>Register</th>
+                    <th>Value</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
