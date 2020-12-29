@@ -1,0 +1,108 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    overflow: hidden;
+    background-color: #f5f5f5;
+}
+
+/*textarea,
+input,
+button,
+select {
+    font-family: inherit;
+    font-size: inherit;
+}*/
+
+/* Table defaults from https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Styling_tables */
+
+table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+th,
+td {
+    padding: 20px;
+}
+
+/* custom table styling */
+
+table td {
+    border: 1px solid black;
+}
+
+.table-header {
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+}
+
+#input-table {
+    margin-bottom: 20px;
+}
+
+/* Grid area */
+
+.grid-container {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 5px 5px;
+    grid-template-areas:
+        "input-source input-source execution-log execution-log"
+        "input-state input-state output-state output-state"
+        "input-state input-state output-state output-state";
+}
+
+#execution-log {
+    grid-area: execution-log;
+    overflow-y: auto;
+}
+
+.input-source {
+    grid-area: input-source;
+    text-align: center;
+}
+
+#source {
+    height: 80%;
+    width: 90%;
+    resize: none;
+    padding: 1%;
+    margin-bottom: 20px;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.input-state {
+    grid-area: input-state;
+    overflow-y: auto;
+    text-align: center;
+}
+
+.input-register,
+.input-value {
+    width: 100%;
+}
+
+.output-state {
+    grid-area: output-state;
+    overflow-y: auto;
+}
+
+.grid-element {
+    border: 1px solid black;
+    padding: 20px;
+}
