@@ -27,7 +27,7 @@ export class RegisterMachine {
     decrement(reg) {
         let res = this.get(reg) - 1;
         if (res < 0) {
-            throw new Error(`invalid decrement instruction - register ${reg} negative`);
+            res = 0;
         }
         this.registers.set(reg, res);
     }

@@ -846,7 +846,7 @@ var RegisterMachine = /*#__PURE__*/function () {
       var res = this.get(reg) - 1;
 
       if (res < 0) {
-        throw new Error("invalid decrement instruction - register ".concat(reg, " negative"));
+        res = 0;
       }
 
       this.registers.set(reg, res);
