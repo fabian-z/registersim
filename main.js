@@ -33,48 +33,35 @@ var executed = []; // contains executed instructions
 
 var steps = []; // contains register contents after execution
 
+var outputStep = -1;
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById("execute").addEventListener("click", function () {
     // Reset register machine and history
     reg.reset();
     executed = [];
-    steps = []; // Reset output
+    steps = [];
+    outputStep = -1; // Reset output
 
-    var outRows = document.querySelectorAll(".output-row");
+    removeOutputRows();
+    document.getElementById("execution-log").innerText = ""; // set register from input
 
-    var _iterator = _createForOfIteratorHelper(outRows),
+    var inRows = document.querySelectorAll(".input-row");
+
+    var _iterator = _createForOfIteratorHelper(inRows),
         _step;
 
     try {
       for (_iterator.s(); !(_step = _iterator.n()).done;) {
         var row = _step.value;
-        row.remove();
-      }
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
-    }
-
-    document.getElementById("execution-log").innerText = ""; // set register from input
-
-    var inRows = document.querySelectorAll(".input-row");
-
-    var _iterator2 = _createForOfIteratorHelper(inRows),
-        _step2;
-
-    try {
-      for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-        var _row = _step2.value;
-        var curReg = parseInt(_row.querySelector(".input-register").value);
-        var curVal = parseInt(_row.querySelector(".input-value").value);
+        var curReg = parseInt(row.querySelector(".input-register").value);
+        var curVal = parseInt(row.querySelector(".input-value").value);
         reg.set(curReg, curVal);
       } // execute source code
 
     } catch (err) {
-      _iterator2.e(err);
+      _iterator.e(err);
     } finally {
-      _iterator2.f();
+      _iterator.f();
     }
 
     var source = document.getElementById("source").value;
@@ -108,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }); // show results in DOM
 
 
+    outputStep = steps.length;
     renderRegisterValues(registers);
   });
   document.getElementById("add-register").addEventListener("click", function () {
@@ -124,9 +112,61 @@ document.addEventListener('DOMContentLoaded', function () {
       inputRows[inputRows.length - 1].remove();
     }
   });
+  document.getElementById("remove-register").addEventListener("click", function () {
+    var inputRows = document.querySelectorAll(".input-row");
+
+    if (inputRows.length > 1) {
+      inputRows[inputRows.length - 1].remove();
+    }
+  });
+  document.getElementById("output-prev").addEventListener("click", function () {
+    if (outputStep <= 1 || steps.length < 1) {
+      return;
+    }
+
+    outputStep -= 1;
+    var registers = steps[outputStep].sort(function (a, b) {
+      return a[0] - b[0];
+    });
+    renderRegisterValues(registers);
+  });
+  document.getElementById("output-next").addEventListener("click", function () {
+    if (outputStep < 0 || steps.length < 1) {
+      return;
+    }
+
+    if (outputStep + 1 >= steps.length) {
+      return;
+    }
+
+    outputStep += 1;
+    var registers = steps[outputStep].sort(function (a, b) {
+      return a[0] - b[0];
+    });
+    renderRegisterValues(registers);
+  });
 });
 
+function removeOutputRows() {
+  var outRows = document.querySelectorAll(".output-row");
+
+  var _iterator2 = _createForOfIteratorHelper(outRows),
+      _step2;
+
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var row = _step2.value;
+      row.remove();
+    }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+}
+
 function renderRegisterValues(registers) {
+  removeOutputRows();
   var outTable = document.getElementById("output-table");
 
   var _iterator3 = _createForOfIteratorHelper(registers),
