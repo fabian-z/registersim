@@ -27,11 +27,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
-var reg = new _register_js__WEBPACK_IMPORTED_MODULE_1__.RegisterMachine();
+var reg = new _register_js__WEBPACK_IMPORTED_MODULE_1__.RegisterMachine(); // actual register machine instance used
+
+var executed = []; // contains executed instructions
+
+var steps = []; // contains register contents after execution
+
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById("execute").addEventListener("click", function () {
-    // Reset register machine
-    reg.reset(); // Reset output
+    // Reset register machine and history
+    reg.reset();
+    executed = [];
+    steps = []; // Reset output
 
     var outRows = document.querySelectorAll(".output-row");
 
@@ -72,16 +79,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var source = document.getElementById("source").value;
 
+    var instructionCallback = function instructionCallback(instruction) {
+      executed.push(instruction);
+      steps.push(_toConsumableArray(reg.registers.entries()));
+      document.getElementById("execution-log").innerText += "(".concat(executed.length, ") ").concat(instructionToText(instruction), "\n");
+    };
+
     try {
       var ast = (0,_parser_parser_js__WEBPACK_IMPORTED_MODULE_0__.parse)(source);
-      reg.processInstructions(ast);
+      reg.processInstructions(ast, instructionCallback);
     } catch (e) {
       var errorMsg;
 
       if (e.name === "SyntaxError") {
         errorMsg = "Syntax error on line ".concat(e.location.start.line, ", column ").concat(e.location.start.column, ": ").concat(e.message);
       } else {
-        errorMsg = "Execution error: " + e.message;
+        errorMsg = "Unexpected error: " + e.message;
       }
 
       document.getElementById("execution-log").innerText = errorMsg;
@@ -95,31 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }); // show results in DOM
 
 
-    var outTable = document.getElementById("output-table");
-
-    var _iterator3 = _createForOfIteratorHelper(registers),
-        _step3;
-
-    try {
-      for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-        var regVal = _step3.value;
-        var register = regVal[0];
-        var value = regVal[1];
-        var outerRow = document.createElement("tr");
-        outerRow.className = "output-row";
-        var firstCol = document.createElement("td");
-        firstCol.innerText = register;
-        var secondCol = document.createElement("td");
-        secondCol.innerText = value;
-        outerRow.append(firstCol);
-        outerRow.append(secondCol);
-        outTable.append(outerRow);
-      }
-    } catch (err) {
-      _iterator3.e(err);
-    } finally {
-      _iterator3.f();
-    }
+    renderRegisterValues(registers);
   });
   document.getElementById("add-register").addEventListener("click", function () {
     var input = document.getElementById("input-table");
@@ -136,6 +125,58 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+function renderRegisterValues(registers) {
+  var outTable = document.getElementById("output-table");
+
+  var _iterator3 = _createForOfIteratorHelper(registers),
+      _step3;
+
+  try {
+    for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+      var regVal = _step3.value;
+      var register = regVal[0];
+      var value = regVal[1];
+      var outerRow = document.createElement("tr");
+      outerRow.className = "output-row";
+      var firstCol = document.createElement("td");
+      firstCol.innerText = register;
+      var secondCol = document.createElement("td");
+      secondCol.innerText = value;
+      outerRow.append(firstCol);
+      outerRow.append(secondCol);
+      outTable.append(outerRow);
+    }
+  } catch (err) {
+    _iterator3.e(err);
+  } finally {
+    _iterator3.f();
+  }
+}
+
+function instructionToText(instruction) {
+  switch (instruction.action) {
+    case "increment":
+      {
+        return "Incrementing register ".concat(instruction.register);
+      }
+
+    case "decrement":
+      {
+        return "Decrementing register ".concat(instruction.register);
+      }
+
+    case "loopUntilZero":
+      {
+        return "Looping ".concat(instruction.commands.length, " instructions while register ").concat(instruction.register, " is not 0");
+      }
+
+    default:
+      {
+        throw new Error("invalid instruction: " + instruction.action);
+      }
+  }
+}
 
 /***/ }),
 
@@ -859,6 +900,16 @@ var RegisterMachine = /*#__PURE__*/function () {
   }, {
     key: "processInstructions",
     value: function processInstructions(ast, instructionCallback) {
+      // Setup callback if requested, noop otherwise
+      // instructionCallback is executed after commands and before
+      // entering loops
+      var callback = noop;
+
+      if (instructionCallback) {
+        callback = instructionCallback;
+      } // Process commands
+
+
       var _iterator = _createForOfIteratorHelper(ast),
           _step;
 
@@ -866,25 +917,25 @@ var RegisterMachine = /*#__PURE__*/function () {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var command = _step.value;
 
-          if (instructionCallback) {
-            instructionCallback(command);
-          }
-
           switch (command.action) {
             case "increment":
               {
                 this.increment(command.register);
+                callback(command);
                 break;
               }
 
             case "decrement":
               {
                 this.decrement(command.register);
+                callback(command);
                 break;
               }
 
             case "loopUntilZero":
               {
+                callback(command);
+
                 while (this.get(command.register) !== 0) {
                   this.processInstructions(command.commands, instructionCallback);
                 }
@@ -906,6 +957,8 @@ var RegisterMachine = /*#__PURE__*/function () {
 
   return RegisterMachine;
 }();
+
+function noop() {}
 
 /***/ })
 
