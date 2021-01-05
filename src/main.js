@@ -4,6 +4,7 @@ import { RegisterMachine } from './register.js';
 let reg = new RegisterMachine(); // actual register machine instance used
 let executed = []; // contains executed instructions
 let steps = []; // contains register contents after execution
+let outputStep = -1;
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("execute").addEventListener("click", function() {
@@ -11,12 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
         reg.reset();
         executed = [];
         steps = [];
+        outputStep = -1;
 
         // Reset output
-        let outRows = document.querySelectorAll(".output-row");
-        for (let row of outRows) {
-            row.remove();
-        }
+        removeOutputRows();
         document.getElementById("execution-log").innerText = "";
 
         // set register from input
@@ -55,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let registers = [...reg.registers.entries()].sort((a, b) => a[0] - b[0]);
 
         // show results in DOM
+        outputStep = steps.length;
         renderRegisterValues(registers);
     });
 
@@ -75,9 +75,45 @@ document.addEventListener('DOMContentLoaded', function() {
             inputRows[inputRows.length - 1].remove();
         }
     });
+
+    document.getElementById("remove-register").addEventListener("click", function() {
+        let inputRows = document.querySelectorAll(".input-row");
+        if (inputRows.length > 1) {
+            inputRows[inputRows.length - 1].remove();
+        }
+    });
+
+    document.getElementById("output-prev").addEventListener("click", function() {
+        if (outputStep <= 1 || steps.length < 1) {
+            return;
+        }
+        outputStep -= 1;
+        let registers = steps[outputStep].sort((a, b) => a[0] - b[0]);
+        renderRegisterValues(registers);
+    });
+
+    document.getElementById("output-next").addEventListener("click", function() {
+        if (outputStep < 0 || steps.length < 1) {
+            return;
+        }
+        if (outputStep + 1 >= steps.length) {
+            return;
+        }
+        outputStep += 1;
+        let registers = steps[outputStep].sort((a, b) => a[0] - b[0]);
+        renderRegisterValues(registers);
+    });
 });
 
+function removeOutputRows() {
+    let outRows = document.querySelectorAll(".output-row");
+    for (let row of outRows) {
+        row.remove();
+    }
+}
+
 function renderRegisterValues(registers) {
+    removeOutputRows();
     let outTable = document.getElementById("output-table");
     for (let regVal of registers) {
         let register = regVal[0];

@@ -106,3 +106,12 @@ table td {
     border: 1px solid black;
     padding: 20px;
 }
+
+#output-prev,
+#output-next {
+    display: inline-block;
+    cursor: pointer;
+    margin: 0 5px;
+    padding: 5px;
+    user-select: none;
+}
