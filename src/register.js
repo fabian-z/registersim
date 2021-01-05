@@ -37,20 +37,29 @@ export class RegisterMachine {
     }
 
     processInstructions(ast, instructionCallback) {
+        // Setup callback if requested, noop otherwise
+        // instructionCallback is executed after commands and before
+        // entering loops
+        let callback = noop;
+        if (instructionCallback) {
+            callback = instructionCallback;
+        }
+
+        // Process commands
         for (let command of ast) {
-            if (instructionCallback) {
-                instructionCallback(command);
-            }
             switch (command.action) {
                 case "increment": {
                     this.increment(command.register);
+                    callback(command);
                     break;
                 }
                 case "decrement": {
                     this.decrement(command.register);
+                    callback(command);
                     break;
                 }
                 case "loopUntilZero": {
+                    callback(command);
                     while (this.get(command.register) !== 0) {
                         this.processInstructions(command.commands, instructionCallback);
                     }
@@ -62,3 +71,5 @@ export class RegisterMachine {
         }
     }
 }
+
+function noop() {}
