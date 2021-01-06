@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     var source = document.getElementById("source").value;
+    var executionLog = document.getElementById("execution-log");
 
     var instructionCallback = function instructionCallback(instruction) {
       var prefix = "";
@@ -76,7 +77,8 @@ document.addEventListener('DOMContentLoaded', function () {
         prefix = "(".concat(executed.length, ") ");
       }
 
-      document.getElementById("execution-log").innerText += prefix + "".concat(instructionToText(instruction), "\n");
+      executionLog.innerText += prefix + "".concat(instructionToText(instruction), "\n");
+      executionLog.scrollTop = executionLog.scrollHeight;
     };
 
     try {
@@ -91,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
         errorMsg = "Unexpected error: " + e.message;
       }
 
-      document.getElementById("execution-log").innerText = errorMsg;
+      executionLog.innerText = errorMsg;
       console.log(e);
       return;
     } // extract and sort results
@@ -99,8 +101,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var registers = _toConsumableArray(reg.registers.entries()).sort(function (a, b) {
       return a[0] - b[0];
-    }); // show results in DOM
+    }); // execution log final padding
 
+
+    executionLog.innerText += "\n";
+    executionLog.scrollTop = executionLog.scrollHeight; // show results in DOM
 
     outputStep = steps.length;
     document.getElementById("output-step").innerText = outputStep;
@@ -120,20 +125,13 @@ document.addEventListener('DOMContentLoaded', function () {
       inputRows[inputRows.length - 1].remove();
     }
   });
-  document.getElementById("remove-register").addEventListener("click", function () {
-    var inputRows = document.querySelectorAll(".input-row");
-
-    if (inputRows.length > 1) {
-      inputRows[inputRows.length - 1].remove();
-    }
-  });
   document.getElementById("output-prev").addEventListener("click", function () {
     if (outputStep <= 1 || steps.length < 1) {
       return;
     }
 
     outputStep -= 1;
-    var registers = steps[outputStep].sort(function (a, b) {
+    var registers = steps[outputStep - 1].sort(function (a, b) {
       return a[0] - b[0];
     });
     document.getElementById("output-step").innerText = outputStep;
@@ -144,12 +142,12 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    if (outputStep + 1 >= steps.length) {
+    if (outputStep + 1 > steps.length) {
       return;
     }
 
     outputStep += 1;
-    var registers = steps[outputStep].sort(function (a, b) {
+    var registers = steps[outputStep - 1].sort(function (a, b) {
       return a[0] - b[0];
     });
     document.getElementById("output-step").innerText = outputStep;

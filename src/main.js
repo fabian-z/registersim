@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // execute source code
         let source = document.getElementById("source").value;
 
+        let executionLog = document.getElementById("execution-log");
         let instructionCallback = function(instruction) {
             let prefix = "";
             if (instruction.action !== "loopUntilZero") {
@@ -37,7 +38,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 steps.push([...reg.registers.entries()]);
                 prefix = `(${executed.length}) `;
             }
-            document.getElementById("execution-log").innerText += prefix + `${instructionToText(instruction)}\n`;
+
+            executionLog.innerText += prefix + `${instructionToText(instruction)}\n`;
+            executionLog.scrollTop = executionLog.scrollHeight;
         };
 
         try {
@@ -50,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 errorMsg = "Unexpected error: " + e.message;
             }
-            document.getElementById("execution-log").innerText = errorMsg;
+            executionLog.innerText = errorMsg;
             console.log(e);
             return;
         }
@@ -58,8 +61,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // extract and sort results
         let registers = [...reg.registers.entries()].sort((a, b) => a[0] - b[0]);
 
+        // execution log final padding
+        executionLog.innerText += "\n";
+        executionLog.scrollTop = executionLog.scrollHeight;
+
         // show results in DOM
-        outputStep = steps.length + 1;
+        outputStep = steps.length;
         document.getElementById("output-step").innerText = outputStep;
         renderRegisterValues(registers);
     });
@@ -82,19 +89,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.getElementById("remove-register").addEventListener("click", function() {
-        let inputRows = document.querySelectorAll(".input-row");
-        if (inputRows.length > 1) {
-            inputRows[inputRows.length - 1].remove();
-        }
-    });
-
     document.getElementById("output-prev").addEventListener("click", function() {
         if (outputStep <= 1 || steps.length < 1) {
             return;
         }
         outputStep -= 1;
-        let registers = steps[outputStep].sort((a, b) => a[0] - b[0]);
+        let registers = steps[outputStep - 1].sort((a, b) => a[0] - b[0]);
         document.getElementById("output-step").innerText = outputStep;
         renderRegisterValues(registers);
     });
@@ -103,11 +103,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (outputStep < 0 || steps.length < 1) {
             return;
         }
-        if (outputStep + 1 >= steps.length) {
+        if (outputStep + 1 > steps.length) {
             return;
         }
         outputStep += 1;
-        let registers = steps[outputStep].sort((a, b) => a[0] - b[0]);
+        let registers = steps[outputStep - 1].sort((a, b) => a[0] - b[0]);
         document.getElementById("output-step").innerText = outputStep;
         renderRegisterValues(registers);
     });
