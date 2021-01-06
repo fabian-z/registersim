@@ -74,9 +74,12 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("add-register").addEventListener("click", function() {
         let input = document.getElementById("input-table");
 
+        let registers = input.querySelectorAll(".input-register");
+        let newRegister = parseInt(registers[registers.length-1].value) + 1;
+
         let inputRow = document.createElement("tr");
         inputRow.className = "input-row";
-        inputRow.innerHTML = `<td><input class="input-register" type="number" min="0" step="1" value="0"></td>
+        inputRow.innerHTML = `<td><input class="input-register" type="number" min="0" step="1" value="${newRegister}"></td>
         <td><input class="input-value" type="number" min="0" step="1" value="0"></td>`;
 
         input.append(inputRow);

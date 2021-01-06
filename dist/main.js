@@ -113,9 +113,11 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   document.getElementById("add-register").addEventListener("click", function () {
     var input = document.getElementById("input-table");
+    var registers = input.querySelectorAll(".input-register");
+    var newRegister = parseInt(registers[registers.length - 1].value) + 1;
     var inputRow = document.createElement("tr");
     inputRow.className = "input-row";
-    inputRow.innerHTML = "<td><input class=\"input-register\" type=\"number\" min=\"0\" step=\"1\" value=\"0\"></td>\n        <td><input class=\"input-value\" type=\"number\" min=\"0\" step=\"1\" value=\"0\"></td>";
+    inputRow.innerHTML = "<td><input class=\"input-register\" type=\"number\" min=\"0\" step=\"1\" value=\"".concat(newRegister, "\"></td>\n        <td><input class=\"input-value\" type=\"number\" min=\"0\" step=\"1\" value=\"0\"></td>");
     input.append(inputRow);
   });
   document.getElementById("remove-register").addEventListener("click", function () {
