@@ -90,28 +90,64 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.getElementById("output-prev").addEventListener("click", function() {
-        if (outputStep <= 1 || steps.length < 1) {
-            return;
-        }
-        outputStep -= 1;
-        let registers = steps[outputStep - 1].sort((a, b) => a[0] - b[0]);
-        document.getElementById("output-step").innerText = outputStep;
-        renderRegisterValues(registers);
+        showPreviousStep();
     });
 
     document.getElementById("output-next").addEventListener("click", function() {
-        if (outputStep < 0 || steps.length < 1) {
-            return;
-        }
-        if (outputStep + 1 > steps.length) {
-            return;
-        }
-        outputStep += 1;
-        let registers = steps[outputStep - 1].sort((a, b) => a[0] - b[0]);
-        document.getElementById("output-step").innerText = outputStep;
-        renderRegisterValues(registers);
+      showNextStep();
     });
+
+    window.addEventListener("keydown", function (event) {
+        if (event.defaultPrevented) {
+          return;
+        }
+
+        let tagName = event.target.tagName.toLowerCase();
+        if (tagName === "input" || tagName === "textarea") {
+            return;
+        }
+      
+        switch (event.key) {
+          case "Left": // IE/Edge specific value
+          case "ArrowLeft": {
+            showPreviousStep();
+            break;
+          }  
+          case "Right": // IE/Edge specific value
+          case "ArrowRight": {
+            showNextStep();
+            break;
+          }
+          default:
+            return;
+        }
+        event.preventDefault();
+      }, true);
+      
 });
+
+function showPreviousStep() {
+    if (outputStep <= 1 || steps.length < 1) {
+        return;
+    }
+    outputStep -= 1;
+    let registers = steps[outputStep - 1].sort((a, b) => a[0] - b[0]);
+    document.getElementById("output-step").innerText = outputStep;
+    renderRegisterValues(registers);
+}
+
+function showNextStep() {
+    if (outputStep < 0 || steps.length < 1) {
+        return;
+    }
+    if (outputStep + 1 > steps.length) {
+        return;
+    }
+    outputStep += 1;
+    let registers = steps[outputStep - 1].sort((a, b) => a[0] - b[0]);
+    document.getElementById("output-step").innerText = outputStep;
+    renderRegisterValues(registers);
+}
 
 function removeOutputRows() {
     let outRows = document.querySelectorAll(".output-row");
