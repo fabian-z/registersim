@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
     outputStep = -1; // Reset output
 
     removeOutputRows();
+    document.getElementById("output-step").innerText = "";
     document.getElementById("execution-log").innerText = ""; // set register from input
 
     var inRows = document.querySelectorAll(".input-row");
@@ -67,9 +68,15 @@ document.addEventListener('DOMContentLoaded', function () {
     var source = document.getElementById("source").value;
 
     var instructionCallback = function instructionCallback(instruction) {
-      executed.push(instruction);
-      steps.push(_toConsumableArray(reg.registers.entries()));
-      document.getElementById("execution-log").innerText += "(".concat(executed.length, ") ").concat(instructionToText(instruction), "\n");
+      var prefix = "";
+
+      if (instruction.action !== "loopUntilZero") {
+        executed.push(instruction);
+        steps.push(_toConsumableArray(reg.registers.entries()));
+        prefix = "(".concat(executed.length, ") ");
+      }
+
+      document.getElementById("execution-log").innerText += prefix + "".concat(instructionToText(instruction), "\n");
     };
 
     try {
@@ -96,6 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     outputStep = steps.length;
+    document.getElementById("output-step").innerText = outputStep;
     renderRegisterValues(registers);
   });
   document.getElementById("add-register").addEventListener("click", function () {
@@ -128,6 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var registers = steps[outputStep].sort(function (a, b) {
       return a[0] - b[0];
     });
+    document.getElementById("output-step").innerText = outputStep;
     renderRegisterValues(registers);
   });
   document.getElementById("output-next").addEventListener("click", function () {
@@ -143,6 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var registers = steps[outputStep].sort(function (a, b) {
       return a[0] - b[0];
     });
+    document.getElementById("output-step").innerText = outputStep;
     renderRegisterValues(registers);
   });
 });
@@ -208,7 +218,7 @@ function instructionToText(instruction) {
 
     case "loopUntilZero":
       {
-        return "Looping ".concat(instruction.commands.length, " instructions while register ").concat(instruction.register, " is not 0");
+        return "Looping ".concat(instruction.commands.length, " instruction(s) while register ").concat(instruction.register, " is not 0");
       }
 
     default:
