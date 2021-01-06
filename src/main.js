@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Reset output
         removeOutputRows();
+        document.getElementById("output-step").innerText = "";
         document.getElementById("execution-log").innerText = "";
 
         // set register from input
@@ -30,9 +31,13 @@ document.addEventListener('DOMContentLoaded', function() {
         let source = document.getElementById("source").value;
 
         let instructionCallback = function(instruction) {
-            executed.push(instruction);
-            steps.push([...reg.registers.entries()]);
-            document.getElementById("execution-log").innerText += `(${executed.length}) ${instructionToText(instruction)}\n`;
+            let prefix = "";
+            if (instruction.action !== "loopUntilZero") {
+                executed.push(instruction);
+                steps.push([...reg.registers.entries()]);
+                prefix = `(${executed.length}) `;
+            }
+            document.getElementById("execution-log").innerText += prefix + `${instructionToText(instruction)}\n`;
         };
 
         try {
@@ -54,7 +59,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let registers = [...reg.registers.entries()].sort((a, b) => a[0] - b[0]);
 
         // show results in DOM
-        outputStep = steps.length;
+        outputStep = steps.length + 1;
+        document.getElementById("output-step").innerText = outputStep;
         renderRegisterValues(registers);
     });
 
@@ -89,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         outputStep -= 1;
         let registers = steps[outputStep].sort((a, b) => a[0] - b[0]);
+        document.getElementById("output-step").innerText = outputStep;
         renderRegisterValues(registers);
     });
 
@@ -101,6 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         outputStep += 1;
         let registers = steps[outputStep].sort((a, b) => a[0] - b[0]);
+        document.getElementById("output-step").innerText = outputStep;
         renderRegisterValues(registers);
     });
 });
@@ -143,7 +151,7 @@ function instructionToText(instruction) {
             return `Decrementing register ${instruction.register}`;
         }
         case "loopUntilZero": {
-            return `Looping ${instruction.commands.length} instructions while register ${instruction.register} is not 0`;
+            return `Looping ${instruction.commands.length} instruction(s) while register ${instruction.register} is not 0`;
         }
         default: {
             throw new Error("invalid instruction: " + instruction.action);

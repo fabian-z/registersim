@@ -115,3 +115,12 @@ table td {
     padding: 5px;
     user-select: none;
 }
+
+#output-step,
+#output-wrapper {
+    display: inline-block;
+}
+
+#output-wrapper {
+    min-width: 30%;
+}
